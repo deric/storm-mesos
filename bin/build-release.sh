@@ -18,9 +18,15 @@ echo `lein install`
 echo `lein pom`
 echo `mvn dependency:copy-dependencies`
 
+if [ ! -f storm.zip ]
+then
+    curl -LO https://dl.dropbox.com/s/fl4kr7w0oc8ihdw/storm-0.8.2.zip
+    mv storm-0.8.2.zip storm.zip
+fi
+
 echo `rm -rf _release`
 echo `mkdir -p _release`
-echo `cp $1 _release/storm.zip`
+echo `cp storm.zip _release/storm.zip`
 cd _release
 echo `unzip storm.zip`
 echo `rm storm.zip`
