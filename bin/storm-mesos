@@ -3,6 +3,8 @@
 import sys
 import os
 
+os.environ['MESOS_NATIVE_LIBRARY'] = "/usr/local/lib/libmesos.so"
+
 STORM_PATH = "/".join(os.path.abspath(__file__).split("/")[0:-1]) + "/storm"
 
 def nimbus():
