@@ -340,16 +340,7 @@ public class MesosNimbus implements INimbus {
     private OfferID findOffer(WorkerSlot worker) {
         int port = worker.getPort();
         ArrayList<Offer> offers = new ArrayList(_offers.values());
-        Collections.sort(offers, new Comparator<Offer>() {
-          public int compare(Offer lhs, Offer rhs) {
-            if (lhs.getSlaveLoadHint() > rhs.getSlaveLoadHint()) {
-              return 1;
-            } else if (lhs.getSlaveLoadHint() < rhs.getSlaveLoadHint()) {
-              return -1;
-            }
-            return 0;
-          }
-        });
+        Collections.shuffle(offers);
         for(Offer offer: offers) {
             if(offer.getHostname().equals(worker.getNodeId())) {
                 for(Resource r: offer.getResourcesList()) {
