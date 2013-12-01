@@ -49,8 +49,7 @@ echo `cp bin/storm-mesos _release/storm/bin/`
 echo `mkdir -p _release/storm/native`
 echo `cp zmqlibs/linux/* _release/storm/native`
 
-echo `cp storm.yaml _release/storm/conf/storm.yamlcd ..
-`
+echo `cp storm.yaml _release/storm/conf/storm.yaml`
 
 cd _release
 echo `mv storm storm-mesos-$RELEASE`
