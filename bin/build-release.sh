@@ -17,6 +17,7 @@ echo `lein jar`
 echo `lein install`
 echo `lein pom`
 echo `mvn dependency:copy-dependencies`
+echo `mvn package`
 
 if [ ! -f storm.zip ]
 then
