@@ -1,9 +1,9 @@
-java.library.path: "native:/Users/nathan/devtools/mesos-0.9.0/build/src/.libs"
-mesos.master.url: "local"
-mesos.executor.uri: "/globally/available/location/of/distribution/storm-mesos-0.0.1-SNAPSHOT.tgz"
+java.library.path: "/mnt/share/cincuada/native/"
+mesos.master.url: "storm1.fit.cvut.cz:5050"
+mesos.executor.uri: "/mnt/share/cincuada/storm-mesos-airbnb.tar.xz"
 storm.zookeeper.servers:
-    - "localhost"
-nimbus.host: "localhost"
+    - "storm2.fit.cvut.cz"
+nimbus.host: "storm2.fit.cvut.cz"
 
 storm.local.dir: "storm-local"
 
@@ -13,3 +13,4 @@ mesos.framework.checkpoint: false
 #  - host1
 #mesos.disallowed.hosts:
 #  - host1
+
