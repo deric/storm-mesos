@@ -12,10 +12,10 @@ echo `rm -rf lib/ classes/`
 echo `rm -rf target`
 echo `rm -f *mesos*.tar.xz`
 
-echo `lein deps`
-echo `lein jar`
-echo `lein install`
-echo `lein pom`
+echo `lein with-profile release deps`
+echo `lein with-profile release jar`
+echo `lein with-profile release install`
+echo `lein with-profile release pom`
 echo `mvn dependency:copy-dependencies`
 echo `mvn package`
 
@@ -32,7 +32,9 @@ cd _release
 echo `unzip storm.zip`
 echo `rm storm.zip`
 echo `mv storm* storm`
-cd ..
+cd storm
+echo `mv storm*.jar ./lib`
+cd ../..
 echo `rm _release/storm/*.jar`
 echo `rm target/dependency/storm-*.jar`
 echo `cp target/*.jar _release/storm/lib/`
@@ -47,7 +49,8 @@ echo `cp bin/storm-mesos _release/storm/bin/`
 echo `mkdir -p _release/storm/native`
 echo `cp zmqlibs/linux/* _release/storm/native`
 
-echo `cp storm.yaml _release/storm/conf/storm.yaml`
+echo `cp storm.yaml _release/storm/conf/storm.yamlcd ..
+`
 
 cd _release
 echo `mv storm storm-mesos-$RELEASE`
