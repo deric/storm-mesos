@@ -1,5 +1,5 @@
 java.library.path: "/mnt/share/cincuada/native/"
-mesos.master.url: "storm1.fit.cvut.cz:5050"
+mesos.master.url: "storm4.fit.cvut.cz:5050"
 mesos.executor.uri: "/mnt/share/cincuada/storm-mesos-airbnb.tar.xz"
 storm.zookeeper.servers:
     - "storm2.fit.cvut.cz"
