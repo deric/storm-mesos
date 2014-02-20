@@ -90,9 +90,9 @@ function pkg {
 function init_scripts {
   case "$1" in
     debian/*) mkdir -p etc/init.d
-              cp -p "$this"/scripts/debian.init "${DEBDIR}/etc/init.d/gitlab-ci" ;;
+              cp -p "$pwd"/scripts/debian.init "${DEBDIR}/etc/init.d/gitlab-ci" ;;
     ubuntu/*) mkdir -p etc/init
-              cp "$this"/scripts/ubuntu.upstart "${DEBDIR}/etc/init/gitlab-ci.conf" ;;
+              cp "$pwd"/scripts/ubuntu.upstart "${DEBDIR}/etc/init/gitlab-ci.conf" ;;
     *) err "Not sure how to make init scripts for: $1" ;;
   esac
 }
