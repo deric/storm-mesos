@@ -20,11 +20,55 @@ test -x $DAEMON || exit 0
 
 . /lib/lsb/init-functions
 
-PIDFILE=/var/run/mesos-master.pid
+
+# Include storm defaults if available
+if [ -f /etc/default/storm ] ; then
+    . /etc/default/storm
+fi
+
+if [ -f /etc/default/storm-nimbus ] ; then
+    . /etc/default/storm-nimbus
+fi
+
+
+STORM_MESOS_JAR="/usr/lib/storm-mesos/storm-mesos-cvut.jar"
+STORM_MESOS_PATH="/usr/lib/storm-mesos/lib"
+MESOS_JAR="/usr/share/java/mesos-0.17.0.jar"
+
+if [ -z ${MESOS_NATIVE_LIBRARY+x} ]
+then
+  echo "WARNING: MESOS_NATIVE_LIBRARY is not set"
+  MESOS_NATIVE_LIBRARY="/usr/local/lib/libmesos.so"
+fi
+export MESOS_NATIVE_LIBRARY="${MESOS_NATIVE_LIBRARY}"
+
+# Set STORM Options
+STORM_CMD="-classpath "$STORM_CLASSPATH:$STORM_MESOS_JAR:$MESOS_JAR:/usr/lib/storm-mesos/lib/protobuf-java-2.5.0.jar" -Xms${STORM_NIMBUS_JVM_MEMORY} -Xmx${STORM_NIMBUS_JVM_MEMORY} -Djava.library.path=\"$JAVA_LIBRARY_PATH:$STORM_MESOS_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_NIMBUS_JVM_OPTS storm.mesos.MesosNimbus"
+
+
+find_java() {
+  if [ ! -z "$JAVA_HOME" ]; then
+    return
+  fi
+  JAVA_DEB="$(readlink -f /usr/bin/java | sed 's:/bin/java::')"
+  for dir in /opt/jdk /System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home /usr/java/default "$JAVA_DEB"; do
+    if [ -x "$dir/bin/java" ]; then
+      JAVA_HOME="$dir"
+      break
+    fi
+  done
+}
+
+echo $STORM_CMD
+
+find_java
+JAVA=${JAVA_HOME}/bin/java
+
+PIDFILE=/var/run/storm-mesos.pid
 
 go_daemon() {
   [ -z "${ULIMIT:-}" ] || ulimit $ULIMIT
-  exec ${DAEMON} 2>&1
+  exec $JAVA $STORM_CMD 2>&1
 }
 
 start_storm_mesos() {
