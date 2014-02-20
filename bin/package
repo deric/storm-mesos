@@ -46,7 +46,7 @@ function build {(
 )}
 
 function installation {(
-  DEBDIR="${this}/deb"
+  DEBDIR="${pwd}/deb"
   mkdir -p "${pwd}/deb"
   cd "${pwd}/deb"
   # copy all files
