@@ -80,7 +80,7 @@ function pkg {
          --vendor ""
          -m barton.tomas@gmail.com
          --prefix=/
-         --after-install "$this/scripts/postinst.sh"
+         --after-install "$pwd/scripts/postinst.sh"
          -d "default-jre"
          -d "mesos"
          -d "storm"
