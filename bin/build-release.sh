@@ -21,8 +21,8 @@ echo `mvn package`
 
 if [ ! -f storm.zip ]
 then
-    curl -LO https://dl.dropboxusercontent.com/s/t8m516l2kadt7c6/storm-0.9.0-rc3.zip
-    mv storm-0.9.0-rc3.zip storm.zip
+    curl -LO https://dl.dropboxusercontent.com/s/dj86w8ojecgsam7/storm-0.9.0.1.zip
+    mv storm-0.9.0.1.zip storm.zip
 fi
 
 echo `rm -rf _release`
