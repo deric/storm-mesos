@@ -62,6 +62,7 @@ function installation {(
   cp "../bin/storm-mesos" "usr/local/bin"
 
   init_scripts "$linux"
+  cd ..
 )}
 
 function pkg {
