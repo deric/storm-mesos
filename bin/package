@@ -59,6 +59,8 @@ function installation {(
   cp -r "${pwd}/lib" "usr/lib/storm-mesos"
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin"
+
+  init_scripts "$linux"
 )}
 
 function pkg {
@@ -77,11 +79,22 @@ function pkg {
          --vendor ""
          -m barton.tomas@gmail.com
          --prefix=/
+         --after-install "$this/scripts/postinst.sh"
          -d "default-jre"
          -d "mesos"
          -d "storm"
          -s dir )
   ( cd deb && "$gem_bin"/fpm "${opts[@]}" -p "$pwd"/"$pkg" -- . )
+}
+
+function init_scripts {
+  case "$1" in
+    debian/*) mkdir -p etc/init.d
+              cp -p "$this"/scripts/debian.init "${DEBDIR}/etc/init.d/gitlab-ci" ;;
+    ubuntu/*) mkdir -p etc/init
+              cp "$this"/scripts/ubuntu.upstart "${DEBDIR}/etc/init/gitlab-ci.conf" ;;
+    *) err "Not sure how to make init scripts for: $1" ;;
+  esac
 }
 
 
