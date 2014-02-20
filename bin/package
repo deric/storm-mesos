@@ -1,0 +1,144 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+export LC_ALL=C
+function -h {
+cat <<USAGE
+ USAGE: package
+
+ Creates debian package for storm-mesos
+USAGE
+}; function --help { -h ;}
+
+this="$(cd "$(dirname "$0")" && pwd -P)"
+name="storm-mesos"
+
+function main {
+  version=$1
+  msg "building ${name} version: ${version}"
+  cleanup
+  checkout
+  build
+  installation
+  pkg
+  finish
+  msg "packaging finished!"
+}
+
+function cleanup {
+  pwd="$(pwd -P)"
+  rm -f *.deb
+  rm -rf _release
+  rm -rf lib/ classes/
+  rm -rf target
+  rm -f *storm-mesos*.tar.xz
+}
+
+function checkout {
+  if [ ! -f storm.zip ]; then
+      curl -LO https://dl.dropboxusercontent.com/s/t8m516l2kadt7c6/storm-0.9.0-rc3.zip
+      mv storm-0.9.0-rc3.zip storm.zip
+  fi
+}
+
+function build {(
+  #mvn dependency:copy-dependencies
+  mvn package
+)}
+
+function installation {(
+  mkdir -p "${pwd}/deb"
+  cd "${pwd}/deb"
+  # copy all files
+  mkdir -p "usr/lib/storm-mesos"
+  local jar="../target/storm-mesos*.jar"
+  local jar_path=$(ls ${jar})
+  if [ ! -f $jar_path ]; then
+    err "file ${jar_path} does not exist"
+  fi
+  cp $jar_path usr/lib/storm-mesos
+  cp -r "${pwd}/lib" "usr/lib/storm-mesos"
+  mkdir -p "usr/local/bin"
+  cp "../bin/storm-mesos" "usr/local/bin"
+)}
+
+function pkg {
+  cd $pwd
+  local version="$version"
+  local opts=()
+  pkg="$name"_"$version"_"all".deb
+  opts=( -t deb
+         -n "$name"
+         -v "$version"
+         --description
+"Storm connector for Mesos cluster manager"
+         --url=http://modgen.net
+         -a "all"
+         --category misc
+         --vendor ""
+         -m barton.tomas@gmail.com
+         --prefix=/
+         -d "default-jre"
+         -d "mesos"
+         -d "storm"
+         -s dir )
+  ( cd deb && "$gem_bin"/fpm "${opts[@]}" -p "$pwd"/"$pkg" -- . )
+}
+
+
+function finish {
+  echo "removing deb directory"
+  #remove build directory
+  rm -rf "$pwd/deb"
+}
+
+function get_system_info {
+  linux="$(lsb_release_tag)"            # <distro>/<version>, like ubuntu/12.10
+  arch="$(architecture)"          # In the format used to label distro packages
+  gem_bin="$(find_gem_bin)"                          # Might not be on the PATH
+  codename="$(get_codename)"
+}
+
+function lsb_release_tag {
+  lsb_release --id --release | cut -d: -f2 | tr A-Z a-z | xargs | tr ' ' '/'
+}
+
+function architecture {
+  case "$linux" in
+    ubuntu/*|debian/*) dpkg-architecture -qDEB_BUILD_ARCH ;;
+    centos/*|redhat/*) arch ;;
+    *)                 err "Not sure how to determine arch for: $linux" ;;
+  esac
+}
+
+function find_gem_bin {
+  gem env | sed -n '/^ *- EXECUTABLE DIRECTORY: */ { s/// ; p }'
+}
+
+function get_codename {
+  case "$linux" in
+    ubuntu/*|debian/*)
+      lsb_release -c | cut -d: -f2 | tr A-Z a-z | xargs | tr ' ' '/'
+    ;;
+    centos/*|redhat/*)
+      err "not implemented yet"
+    ;;
+    *)                 err "Not sure how to configure logrotate for: $linux" ;;
+  esac
+}
+
+function msg { out "$*" >&2 ;}
+function err { local x=$? ; msg "$*" ; return $(( $x == 0 ? 1 : $x )) ;}
+function out { printf '%s\n' "$*" ;}
+
+EXPECTED_ARGS=1
+E_BADARGS=65
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Usage: ./bin/`basename $0` {version}"
+  exit $E_BADARGS
+fi
+
+get_system_info
+main "$@"
+
