@@ -89,9 +89,9 @@ function pkg {
 
 function init_scripts {
   case "$1" in
-    debian/*) mkdir -p etc/init.d
+    debian/*) mkdir -p ${DEBDIR}/etc/init.d
               cp -p "$pwd"/scripts/debian.init "${DEBDIR}/etc/init.d/${name}" ;;
-    ubuntu/*) mkdir -p etc/init
+    ubuntu/*) mkdir -p ${DEBDIR}/etc/init
               cp "$pwd"/scripts/ubuntu.upstart "${DEBDIR}/etc/init/${name}.conf" ;;
     *) err "Not sure how to make init scripts for: $1" ;;
   esac
