@@ -63,6 +63,8 @@ function installation {(
   local confdir="usr/lib/storm-mesos/.storm"
   mkdir -p $confdir
   cp "../storm.yaml" $confdir
+  local stormdir="/etc/storm"
+  cp "../scripts/storm-mesos" $stormdir
   init_scripts "$linux"
   cd ..
 )}

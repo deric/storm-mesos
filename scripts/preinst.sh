@@ -14,7 +14,7 @@ add_users()
         addgroup --system $GROUP >/dev/null
   fi
 
-  # creating zookeeper user if he isn't already there
+  # creating storm user if he isn't already there
   if ! getent passwd $USER >/dev/null ; then
         # Adding system user
         adduser \
@@ -27,7 +27,7 @@ add_users()
           $USER  >/dev/null
   fi
 
-  chown $USER:$GROUP /var/log/$NAME
+  chown -R $USER:$GROUP /var/log/$NAME
   chown -R $USER:$GROUP $HOMEDIR
 }
 
