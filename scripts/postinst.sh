@@ -3,7 +3,7 @@ set -e
 
 case "$1" in
   configure)
-    chown -R 0:0 /usr/lib/storm-mesos
+#    chown -R 0:0 /usr/lib/storm-mesos
     ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)

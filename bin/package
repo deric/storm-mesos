@@ -60,8 +60,9 @@ function installation {(
   cp -r "${pwd}/lib" "usr/lib/storm-mesos"
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin"
-  mkdir -p "root/.storm"
-  cp "../storm.yaml" "root/.storm"
+  local confdir="usr/lib/storm-mesos/.storm"
+  mkdir -p $confdir
+  cp "../storm.yaml" $confdir
   init_scripts "$linux"
   cd ..
 )}
@@ -82,9 +83,9 @@ function pkg {
          -m barton.tomas@gmail.com
          --prefix=/
          --after-install "$pwd/scripts/postinst.sh"
+         --before-install "$pwd/scripts/preinst.sh"
          -d "default-jre"
          -d "mesos"
-         -d "storm"
          -s dir )
   ( cd deb && "$gem_bin"/fpm "${opts[@]}" -p "$pwd"/"$pkg" -- . )
 }
