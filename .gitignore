@@ -1,7 +1,9 @@
 *~
-_release/
+release/
+bin/deb/*
 target/
 classes/
 lib/
-storm*
+storm*.deb
+storm*.zip
 storm-mesos-*.jar

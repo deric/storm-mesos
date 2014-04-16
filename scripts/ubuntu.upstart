@@ -6,9 +6,13 @@ respawn
 script
   [ -r /etc/storm/storm-mesos ] && . /etc/storm/storm-mesos
   [ -z "${ULIMIT:-}" ] || ulimit $ULIMIT
-  USER="storm"
-  exec start-stop-daemon --start -c $USER --name storm-mesos \
+  STORM_USER="storm"
+  STORM_HOME="/usr/lib/storm-mesos"
+  STORM_MESOS_PID="/var/run/storm-mesos.pid"
+  exec start-stop-daemon --start --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
+    --name storm-mesos --pidfile ${STORM_MESOS_PID} \
     --exec  /usr/local/bin/storm-mesos nimbus >> /var/log/storm/storm-mesos.log 2>&1
+
 
 end script
 

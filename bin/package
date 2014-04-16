@@ -60,9 +60,9 @@ function installation {(
   cp -r "${pwd}/lib" "usr/lib/storm-mesos"
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin"
-  local confdir="usr/lib/storm-mesos/.storm"
-  mkdir -p $confdir
-  cp "../storm.yaml" $confdir
+  #local confdir="usr/lib/storm-mesos/.storm"
+  #mkdir -p $confdir
+  #cp "../storm.yaml" $confdir
   local stormdir="/etc/storm"
   cp "../scripts/storm-mesos" $stormdir
   init_scripts "$linux"

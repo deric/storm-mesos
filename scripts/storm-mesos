@@ -1,0 +1,7 @@
+#!/bin/bash
+
+USER="storm"
+MESOS_NATIVE_LIBRARY="/usr/local/lib/libmesos.so"
+#STORM_JAVA_OPTS=""
+STORM_MEM="512m"
+STORM_CORE_DIR="/usr/lib/storm-mesos"

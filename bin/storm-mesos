@@ -38,7 +38,7 @@ export STORM_MEM
 # Set JAVA_OPTS to be able to load native libraries and to set heap size
 JAVA_OPTS="$STORM_JAVA_OPTS"
 JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$STORM_LIBRARY_PATH"
-JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_CORE_DIR"
+JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_CORE_DIR -Dstorm.conf.file=storm.yaml"
 # Load extra JAVA_OPTS from conf/java-opts, if it exists
 if [ -e $FWDIR/java-opts ] ; then
   JAVA_OPTS="$JAVA_OPTS `cat $FWDIR/java-opts`"
