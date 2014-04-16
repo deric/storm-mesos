@@ -5,6 +5,6 @@ respawn
 
 script
   [ -z "${ULIMIT:-}" ] || ulimit $ULIMIT
-  exec /usr/local/bin/storm-mesos 2>&1
+  exec /usr/local/bin/storm-mesos nimbus >> /var/log/storm/storm-mesos.log 2>&1
 end script
 

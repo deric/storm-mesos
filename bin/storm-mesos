@@ -6,6 +6,14 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if [ -z ${MESOS_NATIVE_LIBRARY+x} ]
+then
+  echo "WARNING: MESOS_NATIVE_LIBRARY is not set"
+  MESOS_NATIVE_LIBRARY="/usr/local/lib/libmesos.so"
+fi
+export MESOS_NATIVE_LIBRARY="${MESOS_NATIVE_LIBRARY}"
+
+
 #if [ -z "$JAVA_HOME" ]; then
 #  echo "JAVA_HOME is not set" >&2
 #  exit 1
@@ -37,9 +45,9 @@ export JAVA_OPTS
 
 # Build up classpath
 CL_PATH="${CORE_DIR}/storm-mesos-cvut.jar"
-CL_PATH+=:`ls /usr/lib/storm/storm-core-*.jar`
-CL_PATH+=:`ls /usr/lib/storm/storm-netty-*.jar`
-CL_PATH+=:`ls /usr/lib/storm/storm-console-*.jar`
+#CL_PATH+=:`ls /usr/lib/storm/storm-core-*.jar`
+#CL_PATH+=:`ls /usr/lib/storm/storm-netty-*.jar`
+#CL_PATH+=:`ls /usr/lib/storm/storm-console-*.jar`
 for jar in `find $MODGEN_LIBRARY_PATH -name '*jar'`; do
   CL_PATH+=":$jar"
 done

@@ -199,7 +199,7 @@ public class MesosNimbus implements INimbus {
                 finfo.setId(FrameworkID.newBuilder().setValue(id).build());
             }
 
-
+            LOG.info("mesos master: "+ conf.get(CONF_MASTER_URL));
             MesosSchedulerDriver driver =
                 new MesosSchedulerDriver(
                         _scheduler,

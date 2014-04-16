@@ -1,6 +1,5 @@
-java.library.path: "/mnt/share/cincuada/native/"
-mesos.master.url: "storm4.fit.cvut.cz:5050"
-mesos.executor.uri: "/mnt/share/cincuada/storm-mesos-airbnb.tar.xz"
+java.library.path: "/usr/local/lib"
+mesos.master.url: "zk://147.32.232.88:2181/mesos"
 storm.zookeeper.servers:
     - "storm2.fit.cvut.cz"
 nimbus.host: "storm2.fit.cvut.cz"
