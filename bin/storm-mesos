@@ -1,25 +1,60 @@
-#!/usr/bin/python
+#!/bin/bash
+# storm-mesos
 
-import sys
-import os
+if [ -z "$1" ]; then
+  echo "Usage: `basename $0` [<args>]" >&2
+  exit 1
+fi
 
-os.environ['MESOS_NATIVE_LIBRARY'] = "/usr/local/lib/libmesos.so"
+#if [ -z "$JAVA_HOME" ]; then
+#  echo "JAVA_HOME is not set" >&2
+#  exit 1
+#fi
 
-STORM_PATH = "/".join(os.path.abspath(__file__).split("/")[0:-1]) + "/storm"
+FWDIR="$(cd `dirname $0`; pwd)"
+#RUNNER="${JAVA_HOME}/bin/java"
+RUNNER="java"
 
-def nimbus():
-  os.system(STORM_PATH + " nimbus storm.mesos.MesosNimbus")
-  
-def supervisor():
-  os.system(STORM_PATH + " supervisor storm.mesos.MesosSupervisor")
+CORE_DIR="/usr/lib/storm-mesos"
+MODGEN_LIBRARY_PATH="${CORE_DIR}/lib"
 
-COMMANDS = {"nimbus": nimbus, "supervisor": supervisor}
+# Figure out how much memory to use per executor and set it as an environment
+# variable so that our process sees it and can report it to Mesos
+if [ -z "$MODGEN_MEM" ] ; then
+  MODGEN_MEM="512m"
+fi
+export MODGEN_MEM
+
+# Set JAVA_OPTS to be able to load native libraries and to set heap size
+JAVA_OPTS="$MODGEN_JAVA_OPTS"
+JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$MODGEN_LIBRARY_PATH"
+JAVA_OPTS="$JAVA_OPTS -Xms$MODGEN_MEM -Xmx$MODGEN_MEM"
+# Load extra JAVA_OPTS from conf/java-opts, if it exists
+if [ -e $FWDIR/conf/java-opts ] ; then
+  JAVA_OPTS="$JAVA_OPTS `cat $FWDIR/conf/java-opts`"
+fi
+export JAVA_OPTS
+
+# Build up classpath
+CL_PATH="${CORE_DIR}/storm-mesos-cvut.jar"
+CL_PATH+=:`ls /usr/lib/storm/storm-core-*.jar`
+CL_PATH+=:`ls /usr/lib/storm/storm-netty-*.jar`
+CL_PATH+=:`ls /usr/lib/storm/storm-console-*.jar`
+for jar in `find $MODGEN_LIBRARY_PATH -name '*jar'`; do
+  CL_PATH+=":$jar"
+done
+
+if [ $1 = "supervisor" ]; then
+  CMD="storm.mesos.MesosSupervisor"
+elif [ $1 = "nimbus" ]; then
+  CMD="storm.mesos.MesosNimbus"
+else
+  echo "unknown command"
+  exit 1
+fi
 
 
-def main():
-    COMMAND = sys.argv[1]
-    ARGS = sys.argv[2:]
-    (COMMANDS.get(COMMAND))(*ARGS)
-    
-if __name__ == "__main__":
-    main()
+EXTRA_ARGS="$JAVA_OPTS"
+echo "cmd: $RUNNER -cp $CL_PATH $EXTRA_ARGS $CMD"
+exec "$RUNNER" -cp "$CL_PATH" "$CMD" "$EXTRA_ARGS"
+

@@ -1,3 +1,10 @@
+# Storm-mesos
+
+## how to build
+
+    $ ./bin/package
+
+
 Storm integration with the Mesos cluster resource manager. This runs in production within Twitter.
 
 Prebuilt Storm/Mesos releases are available from the [downloads page](https://github.com/nathanmarz/storm-mesos/downloads).
