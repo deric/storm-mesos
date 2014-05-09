@@ -1,8 +1,10 @@
-java.library.path: "/usr/local/lib"
-#mesos.master.url: "zk://147.32.232.88:2181/mesos"
-#storm.zookeeper.servers:
-#    - "storm2.fit.cvut.cz"
-#nimbus.host: "storm2.fit.cvut.cz"
+java.library.path: "/usr/lib/storm-mesos/lib"
+mesos.master.url: "zk://147.32.232.88:2181/mesos"
+mesos.executor.uri: "/usr/lib/storm-mesos"
+storm.home: "/usr/lib/storm-mesos"
+storm.zookeeper.servers:
+    - "storm1.fit.cvut.cz"
+nimbus.host: "storm1.fit.cvut.cz"
 
 storm.local.dir: "storm-local"
 
