@@ -26,7 +26,6 @@ RUNNER="java"
 if [ -z "$STORM_CORE_DIR" ] ; then
   STORM_CORE_DIR="/usr/lib/storm-mesos"
 fi
-STORM_LIBRARY_PATH="${STORM_CORE_DIR}/lib"
 
 # Figure out how much memory to use per executor and set it as an environment
 # variable so that our process sees it and can report it to Mesos
@@ -35,29 +34,33 @@ if [ -z "$STORM_MEM" ] ; then
 fi
 export STORM_MEM
 
-if [ -z "$STORM_CONF_FILE" ]; then
-  STORM_CONF_FILE="/usr/lib/storm-mesos/conf/storm.yaml"
+# Build up classpath
+#CL_PATH="${STORM_CORE_DIR}/storm-mesos-cvut.jar"
+#CL_PATH+=:`ls /usr/lib/storm/storm-core-*.jar`
+#CL_PATH+=:`ls /usr/lib/storm/storm-netty-*.jar`
+#CL_PATH+=:`ls /usr/lib/storm/storm-console-*.jar`
+#for jar in `find $STORM_LIBRARY_PATH -name '*jar'`; do
+#  CL_PATH+=":$jar"
+#done
+
+STORM_LIB="${STORM_CORE_DIR}/lib"
+STORM_JAR="${STORM_CORE_DIR}/storm-mesos-cvut.jar"
+
+if [ -z "$STORM_CONF" ]; then
+  STORM_CONF="/etc/storm"
 fi
 
+STORM_CLASSPATH="$(echo $STORM_LIB/*.jar | tr ' ' ':'):$(echo $STORM_JAR | tr ' ' ':'):$(echo $STORM_CONF | tr ' ' ':'):"
 
 # Set JAVA_OPTS to be able to load native libraries and to set heap size
 JAVA_OPTS="$STORM_JAVA_OPTS"
-JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$STORM_LIBRARY_PATH"
-JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_CORE_DIR -Dstorm.conf.file=$STORM_CONF_FILE"
+JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$STORM_LIB"
+JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_CORE_DIR"
 # Load extra JAVA_OPTS from conf/java-opts, if it exists
 if [ -e $FWDIR/java-opts ] ; then
   JAVA_OPTS="$JAVA_OPTS `cat $FWDIR/java-opts`"
 fi
 export JAVA_OPTS
-
-# Build up classpath
-CL_PATH="${STORM_CORE_DIR}/storm-mesos-cvut.jar"
-#CL_PATH+=:`ls /usr/lib/storm/storm-core-*.jar`
-#CL_PATH+=:`ls /usr/lib/storm/storm-netty-*.jar`
-#CL_PATH+=:`ls /usr/lib/storm/storm-console-*.jar`
-for jar in `find $STORM_LIBRARY_PATH -name '*jar'`; do
-  CL_PATH+=":$jar"
-done
 
 if [ $1 = "supervisor" ]; then
   CMD="storm.mesos.MesosSupervisor"
@@ -68,8 +71,7 @@ else
   exit 1
 fi
 
-
 EXTRA_ARGS="$JAVA_OPTS"
-echo "cmd: $RUNNER -cp $CL_PATH $EXTRA_ARGS $CMD"
-exec "$RUNNER" -cp "$CL_PATH" "$CMD" "$EXTRA_ARGS"
+echo "cmd: $RUNNER -cp $STORM_CLASSPATH $EXTRA_ARGS $CMD"
+exec "$RUNNER" -cp "$STORM_CLASSPATH" "$CMD" "$EXTRA_ARGS"
 
