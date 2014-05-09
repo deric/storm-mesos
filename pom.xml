@@ -7,9 +7,6 @@
     <version>cvut</version>
     <name>storm-mesos</name>
     <description>Storm integration with the Mesos cluster manager</description>
-    <scm>
-        <tag>6d16bad7a2047419b586798934353ca778cde488</tag>
-    </scm>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
@@ -77,9 +74,9 @@
             <version>2.5.0</version>
         </dependency>
         <dependency>
-            <groupId>storm</groupId>
+            <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
-            <version>0.9.0.1</version>
+            <version>0.9.1-incubating</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
