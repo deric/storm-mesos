@@ -407,7 +407,7 @@ public class MesosNimbus implements INimbus {
                                     .setExecutorId(ExecutorID.newBuilder().setValue(details.getId()))
                                     .setData(ByteString.copyFromUtf8(executorDataStr))
                                     .setCommand(CommandInfo.newBuilder()
-                                        .addUris(URI.newBuilder().setValue((String) _conf.get(CONF_EXECUTOR_URI)))
+//                                        .addUris(URI.newBuilder().setValue((String) _conf.get(CONF_EXECUTOR_URI)))
                                         .setValue("storm-mesos supervisor storm.mesos.MesosSupervisor")
                                         ))
                             .addResources(Resource.newBuilder()
