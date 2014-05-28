@@ -80,7 +80,8 @@ function installation {(
   fi
   cp $jar_path $stormhome
   cp -r "${pwd}/lib" $stormhome
-
+  
+  cp -r "${pwd}/public" $stormhome
   # pretend to have a release version
   echo $version > "$stormhome/RELEASE"
 
