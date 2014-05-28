@@ -8,7 +8,7 @@ where specified version should exists on Storm website: e.g. `http://www.us.apac
 
 eventually you can specify a patch version for package
 
-    $ ./bin/package --version 0.9.1-incubating --patch "~p1"
+    $ ./bin/package --version 0.9.1-incubating --patch "-p1"
 
 Storm integration with the Mesos cluster resource manager. This runs in production within Twitter.
 
