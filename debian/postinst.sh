@@ -6,10 +6,6 @@ case "$1" in
     chown -R storm:storm /usr/lib/storm
     ldconfig
 
-    if [ -f /etc/init.d/storm-mesos ]; then
-      chmod +x /etc/init.d/storm-mesos
-    fi
-
     if [ -f /usr/local/bin/storm ]; then
       rm -f /usr/local/bin/storm
     fi
