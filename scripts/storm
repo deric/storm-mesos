@@ -2,10 +2,10 @@
 
 JAVA_LIBRARY_PATH="/usr/local/lib:/opt/local/lib:/usr/lib"
 STORM_USER="root"
-STORM_HOME="/usr/lib/storm"
+STORM_HOME="/usr/lib/storm-mesos"
 STORM_VERSION="0.9.1-incubating"
-STORM_LIB="/usr/lib/storm/lib"
-STORM_JAR="/usr/lib/storm-mesos/lib/storm-core-${STORM_VERSION}.jar"
+STORM_LIB="${STORM_HOME}/lib"
+STORM_JAR="${STORM_LIB}/storm-core-${STORM_VERSION}.jar"
 STORM_CONF="/etc/storm"
 STORM_CLASSPATH="$(echo $STORM_LIB/*.jar | tr ' ' ':'):$(echo $STORM_JAR | tr ' ' ':'):$(echo $STORM_CONF | tr ' ' ':'):"
 
