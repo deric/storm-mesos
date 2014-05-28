@@ -117,7 +117,13 @@ function get_system_info {
 }
 
 function lsb_release_tag {
-  lsb_release --id --release | cut -d: -f2 | tr A-Z a-z | xargs | tr ' ' '/'
+  if [ -f /etc/lsb-release ]; then
+    lsb_release --id --release | cut -d: -f2 | tr A-Z a-z | xargs | tr ' ' '/'
+  else
+    local version=$(awk '{print $3}' /etc/*-release | head -n1)
+    local dist=$(cat /etc/*-release |grep ^ID= | sed 's/ID=//')
+    echo "${dist}/${version}"
+  fi
 }
 
 function architecture {
@@ -135,7 +141,11 @@ function find_gem_bin {
 function get_codename {
   case "$linux" in
     ubuntu/*|debian/*)
-      lsb_release -c | cut -d: -f2 | tr A-Z a-z | xargs | tr ' ' '/'
+      if [ -f /etc/lsb-release ]; then
+        lsb_release -c | cut -d: -f2 | tr A-Z a-z | xargs | tr ' ' '/'
+      else
+        cat /etc/*-release | grep ^VERSION= | sed 's/VERSION=//' | cut -d "(" -f2 | cut -d ")" -f1
+      fi
     ;;
     centos/*|redhat/*)
       err "not implemented yet"
