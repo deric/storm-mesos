@@ -68,6 +68,7 @@ function installation {(
   mkdir -p $confdir
   # copy all files
   mkdir -p "usr/lib/storm-mesos"
+  mkdir -p "usr/lib/storm/storm-local"
   local jar="../target/storm-mesos*.jar"
   local jar_path=$(ls ${jar})
   if [ ! -f $jar_path ]; then
@@ -81,6 +82,7 @@ function installation {(
   #mkdir -p $confdir
   #cp "../storm.yaml" $confdir
   cp "../scripts/storm-mesos" $confdir
+  cp "../scripts/storm.yaml" $confdir
   init_scripts "$linux"
   cd ..
 )}
@@ -103,6 +105,7 @@ function pkg {
          --after-install "$pwd/scripts/postinst.sh"
          --before-install "$pwd/scripts/preinst.sh"
          --config-files "/etc/storm/storm-mesos"
+         --config-files "/etc/storm/storm.yaml"
          -d "default-jre | java7-runtime-headless | java6-runtime-headless"
          -d "mesos"
          -s dir )
