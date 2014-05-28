@@ -1,0 +1,92 @@
+#! /bin/bash
+ 
+### BEGIN INIT INFO
+# Provides:          storm-ui
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the storm ui webservice
+# Description:       starts storm-ui using start-stop-daemon
+### END INIT INFO
+ 
+NAME="storm-ui"
+DESC="Storm UI"
+
+# Include storm defaults if available
+if [ -f /etc/default/storm ] ; then
+    . /etc/default/storm
+fi
+
+if [ -f /etc/default/storm-ui ] ; then
+    . /etc/default/storm-ui
+fi
+ 
+set -e
+ 
+. /lib/lsb/init-functions
+
+# Set STORM Options
+STORM_CMD="-classpath $STORM_CLASSPATH -Xms$STORM_UI_JVM_MEMORY -Xmx$STORM_UI_JVM_MEMORY -Djava.library.path=\"$JAVA_LIBRARY_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_UI_JVM_OPTS backtype.storm.ui.core"
+
+running() {
+  kill -0 `cat ${STORM_UI_PID}` > /dev/null 2>&1
+}
+
+find_java() {
+  if [ ! -z "$JAVA_HOME" ]; then
+    return
+  fi
+  JAVA_DEB="$(readlink -f /usr/bin/java | sed 's:/bin/java::')"
+  for dir in /opt/jdk /System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home /usr/java/default "$JAVA_DEB"; do
+    if [ -x "$dir/bin/java" ]; then
+      JAVA_HOME="$dir"
+      break
+    fi
+  done
+}
+
+find_java
+JAVA=${JAVA_HOME}/bin/java
+PID=${STORM_UI_PID}
+ 
+case "$1" in
+  start)
+
+    if [ ! -x ${JAVA} ]; then
+      echo "FAIL"
+      echo "*** ${JAVA} doesn't exist -- check JAVA_HOME?"
+      exit 1
+    fi
+
+    echo -n "Starting $DESC: "
+    start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
+        --startas $JAVA -- ${STORM_CMD} || true
+    echo "$NAME."
+    ;;
+  stop)
+    echo -n "Stopping $DESC: "
+    start-stop-daemon --stop --quiet --pidfile ${PID} \
+        --exec $JAVA -- ${STORM_CMD} || true
+    echo "$NAME."
+    ;;
+  restart)
+    echo -n "Restarting $DESC: "
+    start-stop-daemon --stop --quiet --pidfile ${PID} \
+        --exec $JAVA -- ${STORM_CMD} || true
+    sleep 1
+    start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
+        --startas $JAVA -- ${STORM_CMD} || true
+    echo "$NAME."
+    ;;
+  status)
+      status_of_proc -p ${PID} $NAME $NAME && exit 0 || exit $?
+      ;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart|status}" >&2
+    exit 1
+    ;;
+esac
+ 
+exit 0

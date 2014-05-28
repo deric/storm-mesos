@@ -82,9 +82,11 @@ function installation {(
   #local confdir="usr/lib/storm-mesos/.storm"
   #mkdir -p $confdir
   #cp "../storm.yaml" $confdir
-  cp "../config/storm-mesos" etc/default/storm-mesos
+  cp "../config/storm-mesos" etc/default/
   cp "../config/storm.yaml" $confdir
-  cp "../config/storm" etc/default/storm
+  cp "../config/storm.log.properties" $confdir
+  cp "../config/storm" etc/default/
+  cp "../config/storm-ui" etc/default/
   init_scripts "$linux"
   cd ..
 )}
@@ -107,6 +109,7 @@ function pkg {
          --after-install "$pwd/debian/postinst.sh"
          --before-install "$pwd/debian/preinst.sh"
          --config-files "/etc/default/storm-mesos"
+         --config-files "/etc/default/storm-ui"
          --config-files "/etc/default/storm"
          --config-files "/etc/storm/storm.yaml"
          -d "default-jre | java7-runtime-headless | java6-runtime-headless"
@@ -118,9 +121,13 @@ function pkg {
 function init_scripts {
   case "$1" in
     debian/*) mkdir -p ${DEBDIR}/etc/init.d
-              cp -p "$pwd"/debian/debian.init "${DEBDIR}/etc/init.d/${name}" ;;
+              cp -p "$pwd"/debian/debian.init "${DEBDIR}/etc/init.d/${name}"
+              cp -p "$pwd"/debian/debian.storm-ui "${DEBDIR}/etc/init.d/storm-ui"
+       ;;
     ubuntu/*) mkdir -p ${DEBDIR}/etc/init
-              cp "$pwd"/debian/ubuntu.upstart "${DEBDIR}/etc/init/${name}.conf" ;;
+              cp "$pwd"/debian/ubuntu.upstart "${DEBDIR}/etc/init/${name}.conf"
+              cp "$pwd"/debian/ubuntu.storm-ui "${DEBDIR}/etc/init/storm-ui.conf"
+       ;;
     *) err "Not sure how to make init scripts for: $1" ;;
   esac
 }
