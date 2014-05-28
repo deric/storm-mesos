@@ -7,7 +7,7 @@ add_users()
   NAME="storm"
   GROUP=$NAME
   USER=$NAME
-  HOMEDIR="/usr/lib/storm-mesos"
+  HOMEDIR="/usr/lib/storm"
 
   if ! getent group $GROUP >/dev/null ; then
         # Adding system group
