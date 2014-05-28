@@ -14,17 +14,18 @@ fi
 export MESOS_NATIVE_LIBRARY="${MESOS_NATIVE_LIBRARY}"
 
 
-#if [ -z "$JAVA_HOME" ]; then
-#  echo "JAVA_HOME is not set" >&2
-#  exit 1
-#fi
-
 FWDIR="/etc/storm"
 #RUNNER="${JAVA_HOME}/bin/java"
 RUNNER="java"
 
-if [ -z "$STORM_CORE_DIR" ] ; then
-  STORM_CORE_DIR="/usr/lib/storm-mesos"
+if [ -z "$STORM_HOME" ] ; then
+  if [ -f /etc/default/storm ] ; then
+    . /etc/default/storm
+  fi
+
+  if [ -f /etc/default/storm-mesos ] ; then
+    . /etc/default/storm-mesos
+  fi
 fi
 
 # Figure out how much memory to use per executor and set it as an environment
@@ -34,28 +35,18 @@ if [ -z "$STORM_MEM" ] ; then
 fi
 export STORM_MEM
 
-# Build up classpath
-#CL_PATH="${STORM_CORE_DIR}/storm-mesos-cvut.jar"
-#CL_PATH+=:`ls /usr/lib/storm/storm-core-*.jar`
-#CL_PATH+=:`ls /usr/lib/storm/storm-netty-*.jar`
-#CL_PATH+=:`ls /usr/lib/storm/storm-console-*.jar`
-#for jar in `find $STORM_LIBRARY_PATH -name '*jar'`; do
-#  CL_PATH+=":$jar"
-#done
-
-STORM_LIB="${STORM_CORE_DIR}/lib"
-STORM_JAR="${STORM_CORE_DIR}/storm-mesos-cvut.jar"
+STORM_MESOS_JAR="${STORM_HOME}/storm-mesos-cvut.jar"
 
 if [ -z "$STORM_CONF" ]; then
   STORM_CONF="/etc/storm"
 fi
 
-STORM_CLASSPATH="$(echo $STORM_LIB/*.jar | tr ' ' ':'):$(echo $STORM_JAR | tr ' ' ':'):$(echo $STORM_CONF | tr ' ' ':'):"
+STORM_CLASSPATH="${STORM_MESOS_JAR}:$STORM_CLASSPATH"
 
 # Set JAVA_OPTS to be able to load native libraries and to set heap size
 JAVA_OPTS="$STORM_JAVA_OPTS"
 JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$STORM_LIB"
-JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_CORE_DIR"
+JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_HOME"
 # Load extra JAVA_OPTS from conf/java-opts, if it exists
 if [ -e $FWDIR/java-opts ] ; then
   JAVA_OPTS="$JAVA_OPTS `cat $FWDIR/java-opts`"
@@ -67,11 +58,10 @@ if [ $1 = "supervisor" ]; then
 elif [ $1 = "nimbus" ]; then
   CMD="storm.mesos.MesosNimbus"
 else
-  echo "unknown command"
+  echo "unknown command, use either 'nimbus' or 'supervisor'"
   exit 1
 fi
 
 EXTRA_ARGS="$JAVA_OPTS"
-echo "cmd: $RUNNER -cp $STORM_CLASSPATH $EXTRA_ARGS $CMD"
+#echo "cmd: $RUNNER -cp $STORM_CLASSPATH $EXTRA_ARGS $CMD"
 exec "$RUNNER" -cp "$STORM_CLASSPATH" "$CMD" "$EXTRA_ARGS"
-

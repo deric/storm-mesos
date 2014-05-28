@@ -36,8 +36,7 @@ if [ -f /etc/default/storm-nimbus ] ; then
 fi
 
 
-STORM_MESOS_JAR="/usr/lib/storm-mesos/storm-mesos-cvut.jar"
-STORM_MESOS_PATH="/usr/lib/storm-mesos/lib"
+STORM_MESOS_JAR="${STORM_HOME}/storm-mesos-cvut.jar"
 MESOS_JAR="/usr/share/java/mesos-${MESOS_VERSION}.jar"
 
 if [ ! -f "${MESOS_JAR}" ]; then
