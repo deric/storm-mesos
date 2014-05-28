@@ -3,7 +3,7 @@ set -e
 
 case "$1" in
   configure)
-    chown -R storm:storm /usr/lib/storm-mesos
+    chown -R storm:storm /usr/lib/storm
     ldconfig
     ;;
 
