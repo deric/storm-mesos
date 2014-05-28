@@ -92,14 +92,14 @@ function pkg {
          -v "$version"
          --description
 "Storm connector for Mesos cluster manager"
-         --url=http://fit.cvut.cz
+         --url=https://storm.incubator.apache.org
          --category misc
          --vendor ""
-         -m barton.tomas@gmail.com
+         -m tomas.barton@modgen.net
          --prefix=/
          --after-install "$pwd/scripts/postinst.sh"
          --before-install "$pwd/scripts/preinst.sh"
-         -d "default-jre"
+         -d "default-jre | java7-runtime-headless | java6-runtime-headless"
          -d "mesos"
          -s dir )
   ( cd deb && "$gem_bin"/fpm "${opts[@]}" -p "$pwd"/"$pkg" -- . )
