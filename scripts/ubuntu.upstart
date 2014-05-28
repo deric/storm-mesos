@@ -4,7 +4,8 @@ start on runlevel [2345]
 respawn
 
 script
-  [ -r /etc/storm/storm-mesos ] && . /etc/storm/storm-mesos
+  [ -r /etc/default/storm ] && . /etc/default/storm
+  [ -r /etc/default/storm-mesos ] && . /etc/default/storm-mesos
   [ -z "${ULIMIT:-}" ] || ulimit $ULIMIT
   STORM_USER="storm"
   STORM_HOME="/usr/lib/storm-mesos"
