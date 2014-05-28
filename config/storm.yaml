@@ -3,7 +3,7 @@ java.library.path: "/usr/local/lib:/opt/local/lib:/usr/lib"
 storm.local.dir: "/usr/lib/storm/storm-local"
 storm.cluster.mode: "distributed"
 storm.local.mode.zmq: false
-storm.home: "/usr/lib/storm-mesos"
+storm.home: "/usr/lib/storm"
 
 #_ ZOOKEEPER _#
 storm.zookeeper.servers:

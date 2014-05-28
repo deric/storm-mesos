@@ -71,7 +71,6 @@ function installation {(
   mkdir -p "etc/default"
   mkdir -p $confdir
   # copy all files
-  mkdir -p "usr/lib/storm-mesos"
   mkdir -p "usr/lib/storm/storm-local"
   local jar="../target/storm-mesos*.jar"
   local jar_path=$(ls ${jar})
@@ -79,7 +78,7 @@ function installation {(
     err "file ${jar_path} does not exist"
   fi
   cp $jar_path usr/lib/storm-mesos
-  cp -r "${pwd}/lib" "usr/lib/storm-mesos"
+  cp -r "${pwd}/lib" "usr/lib/storm"
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin"
   #local confdir="usr/lib/storm-mesos/.storm"

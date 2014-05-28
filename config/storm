@@ -1,8 +1,8 @@
 # /etc/default/storm
 
 JAVA_LIBRARY_PATH="/usr/local/lib:/opt/local/lib:/usr/lib"
-STORM_USER="root"
-STORM_HOME="/usr/lib/storm-mesos"
+STORM_USER="storm"
+STORM_HOME="/usr/lib/storm"
 STORM_VERSION="0.9.1-incubating"
 STORM_LIB="${STORM_HOME}/lib"
 STORM_JAR="${STORM_LIB}/storm-core-${STORM_VERSION}.jar"
