@@ -13,6 +13,15 @@ case "$1" in
     if [ ! -L /usr/local/bin/storm ]; then
       ln -s /usr/lib/storm/bin/storm /usr/local/bin/storm
     fi
+
+    if [ -f /etc/storm/storm.yaml ]; then
+      rm -f /etc/storm/storm.yaml
+    fi
+
+    if [ ! -L /etc/storm.yaml ]; then
+      ln -s /usr/lib/storm/conf/storm.yaml /etc/storm/storm.yaml
+    fi
+
     ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)
