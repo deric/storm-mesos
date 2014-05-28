@@ -121,6 +121,7 @@ function pkg {
          --config-files "/etc/storm/storm.yaml"
          -d "default-jre | java7-runtime-headless | java6-runtime-headless"
          -d "mesos"
+         -d "python2.7"
          -s dir )
   ( cd deb && "$gem_bin"/fpm "${opts[@]}" -p "$pwd"/"$pkg" -- . )
 }
