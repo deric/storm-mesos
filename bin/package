@@ -87,9 +87,12 @@ function installation {(
   # bin scripts
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin/"
-  cp "../${package}/bin/storm" "usr/local/bin/"
-  cp "../${package}/bin/storm.cmd" "usr/local/bin/"
-  cp "../${package}/bin/storm-config.cmd" "usr/local/bin/"
+
+  # storm python script is using relative path to bin/storm location...
+  mkdir "$stormhome/bin"
+  cp "../${package}/bin/storm" "$stormhome/bin/"
+  cp "../${package}/bin/storm.cmd" "$stormhome/bin/"
+  cp "../${package}/bin/storm-config.cmd" "$stormhome/bin/"
 
   # confiuration
   cp "../config/storm-mesos" etc/default/

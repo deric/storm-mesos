@@ -5,6 +5,14 @@ case "$1" in
   configure)
     chown -R storm:storm /usr/lib/storm
     ldconfig
+
+    if [ -f /usr/local/bin/storm ]; then
+      rm -f /usr/local/bin/storm
+    fi
+
+    if [ ! -L /usr/local/bin/storm ]; then
+      ln -s /usr/lib/storm/bin/storm /usr/local/bin/storm
+    fi
     ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)
