@@ -7,3 +7,4 @@ lib/
 storm*.deb
 storm*.zip
 storm-mesos-*.jar
+apache-storm*/*

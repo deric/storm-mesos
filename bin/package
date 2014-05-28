@@ -44,13 +44,16 @@ function cleanup {
 }
 
 function checkout {
-  if [ ! -f storm.zip ]; then
+  local package="apache-storm-${version}"
+  if [ ! -d "${package}" ]; then
       local mirror="http://www.us.apache.org/dist/incubator/storm"
-      local package="apache-storm-${version}"
-      local url="${mirror}/${package}/${package}.zip"
+      # src package should be enough, we can get rest from maven
+      local file=${package}-src.tar.gz
+      local url="${mirror}/${package}/${file}"
       msg "fetching ${url}"
       curl -LO ${url}
-      mv ${package}.zip storm.zip
+      tar xvf $file
+      rm -f $file
   fi
 }
 
