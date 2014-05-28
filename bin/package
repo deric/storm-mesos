@@ -81,6 +81,9 @@ function installation {(
   cp $jar_path $stormhome
   cp -r "${pwd}/lib" $stormhome
 
+  # pretend to have a release version
+  echo $version > "$stormhome/RELEASE"
+
   # bin scripts
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin/"
@@ -121,7 +124,7 @@ function pkg {
          --config-files "/etc/storm/storm.yaml"
          -d "default-jre | java7-runtime-headless | java6-runtime-headless"
          -d "mesos"
-         -d "python2.7"
+         -d "python"
          -s dir )
   ( cd deb && "$gem_bin"/fpm "${opts[@]}" -p "$pwd"/"$pkg" -- . )
 }
