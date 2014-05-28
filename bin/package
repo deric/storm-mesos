@@ -62,6 +62,7 @@ function installation {(
   DEBDIR="${pwd}/deb"
   mkdir -p "${pwd}/deb"
   cd "${pwd}/deb"
+  mkdir -p "var/log/storm"
   # copy all files
   mkdir -p "usr/lib/storm-mesos"
   local jar="../target/storm-mesos*.jar"
