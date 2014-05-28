@@ -3,6 +3,7 @@
 #_ START? _#
 ENABLE="no"
 
+STORM_UI_PID="/var/run/storm-ui.pid"
 #_ UI _#
 STORM_UI_JVM_MEMORY="768m"
 STORM_UI_JVM_OPTS="-Dlog4j.configuration=file:/etc/storm/storm.log.properties -Dlogfile.name=ui.log"
