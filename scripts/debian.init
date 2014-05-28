@@ -53,8 +53,7 @@ fi
 export MESOS_NATIVE_LIBRARY="${MESOS_NATIVE_LIBRARY}"
 
 # Set STORM Options
-STORM_CMD="-classpath "$STORM_CLASSPATH:$STORM_MESOS_JAR:$MESOS_JAR:/usr/lib/storm-mesos/lib/protobuf-java-2.5.0.jar" -Xms${STORM_NIMBUS_JVM_MEMORY} -Xmx${STORM_NIMBUS_JVM_MEMORY} -Djava.library.path=\"$JAVA_LIBRARY_PATH:$STORM_MESOS_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_NIMBUS_JVM_OPTS storm.mesos.MesosNimbus"
-
+#STORM_CMD="-classpath "$STORM_CLASSPATH:$STORM_MESOS_JAR:$MESOS_JAR:/usr/lib/storm-mesos/lib/protobuf-java-2.5.0.jar" -Xms${STORM_NIMBUS_JVM_MEMORY} -Xmx${STORM_NIMBUS_JVM_MEMORY} -Djava.library.path=\"$JAVA_LIBRARY_PATH:$STORM_MESOS_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_NIMBUS_JVM_OPTS storm.mesos.MesosNimbus"
 
 find_java() {
   if [ ! -z "$JAVA_HOME" ]; then
@@ -78,11 +77,11 @@ PIDFILE=/var/run/storm-mesos.pid
 
 go_daemon() {
   [ -z "${ULIMIT:-}" ] || ulimit $ULIMIT
-  exec $JAVA $STORM_CMD 2>&1
+  exec /usr/local/bin/storm-mesos nimbus >> /var/log/storm/storm-mesos.log 2>&1
 }
 
 start_storm_mesos() {
-  start-stop-daemon --start --background --quiet \
+  start-stop-daemon --start --background --quiet --chuid ${STORM_USER} --chdir ${STORM_HOME} \
                     --pidfile "$PIDFILE" --make-pidfile --exec "$0" -- go_daemon
 }
 
