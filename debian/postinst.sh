@@ -4,6 +4,7 @@ set -e
 case "$1" in
   configure)
     chown -R storm:storm /usr/lib/storm-mesos
+    ldconfig
     ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)
