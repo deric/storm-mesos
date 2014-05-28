@@ -84,7 +84,7 @@ function installation {(
 
 function pkg {
   cd $pwd
-  local version="$version"
+  local version="${version}${patch}"
   local opts=()
   pkg="$name"_"$version"_"all".deb
   opts=( -t deb
