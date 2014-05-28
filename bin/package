@@ -65,6 +65,7 @@ function build {(
 function installation {(
   DEBDIR="${pwd}/deb"
   local confdir="etc/storm"
+  local stormhome="usr/lib/storm"
   mkdir -p "${pwd}/deb"
   cd "${pwd}/deb"
   mkdir -p "var/log/storm"
@@ -77,8 +78,8 @@ function installation {(
   if [ ! -f $jar_path ]; then
     err "file ${jar_path} does not exist"
   fi
-  cp $jar_path usr/lib/storm-mesos
-  cp -r "${pwd}/lib" "usr/lib/storm"
+  cp $jar_path $stormhome
+  cp -r "${pwd}/lib" $stormhome
   mkdir -p "usr/local/bin"
   cp "../bin/storm-mesos" "usr/local/bin"
   #local confdir="usr/lib/storm-mesos/.storm"
