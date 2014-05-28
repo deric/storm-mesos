@@ -44,7 +44,7 @@ function cleanup {
 }
 
 function checkout {
-  local package="apache-storm-${version}"
+  package="apache-storm-${version}"
   if [ ! -d "${package}" ]; then
       local mirror="http://www.us.apache.org/dist/incubator/storm"
       # src package should be enough, we can get rest from maven
@@ -80,11 +80,15 @@ function installation {(
   fi
   cp $jar_path $stormhome
   cp -r "${pwd}/lib" $stormhome
+
+  # bin scripts
   mkdir -p "usr/local/bin"
-  cp "../bin/storm-mesos" "usr/local/bin"
-  #local confdir="usr/lib/storm-mesos/.storm"
-  #mkdir -p $confdir
-  #cp "../storm.yaml" $confdir
+  cp "../bin/storm-mesos" "usr/local/bin/"
+  cp "../${package}/bin/storm" "usr/local/bin/"
+  cp "../${package}/bin/storm.cmd" "usr/local/bin/"
+  cp "../${package}/bin/storm-config.cmd" "usr/local/bin/"
+
+  # confiuration
   cp "../config/storm-mesos" etc/default/
   cp "../config/storm.yaml" $confdir
   cp "../config/storm.log.properties" $confdir
