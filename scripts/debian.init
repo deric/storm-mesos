@@ -26,6 +26,11 @@ if [ -f /etc/default/storm ] ; then
     . /etc/default/storm
 fi
 
+if [ -f /etc/default/storm-mesos ] ; then
+    . /etc/default/storm-mesos
+fi
+
+
 if [ -f /etc/default/storm-nimbus ] ; then
     . /etc/default/storm-nimbus
 fi
@@ -33,7 +38,12 @@ fi
 
 STORM_MESOS_JAR="/usr/lib/storm-mesos/storm-mesos-cvut.jar"
 STORM_MESOS_PATH="/usr/lib/storm-mesos/lib"
-MESOS_JAR="/usr/share/java/mesos-0.17.0.jar"
+MESOS_JAR="/usr/share/java/mesos-${MESOS_VERSION}.jar"
+
+if [ ! -f "${MESOS_JAR}" ]; then
+  echo "$MESOS_JAR does not exist"
+  exit 1
+fi
 
 if [ -z ${MESOS_NATIVE_LIBRARY+x} ]
 then
