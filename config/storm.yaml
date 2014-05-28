@@ -21,9 +21,6 @@ worker.heartbeat.frequency.secs: 1
 task.heartbeat.frequency.secs: 3
 task.refresh.poll.secs: 10
 
-#_ 0MQ _#
-zmq.threads: 1
-zmq.linger.millis: 5000
 
 #_ TOPOLOGY _#
 topology.debug: false
@@ -44,3 +41,6 @@ mesos.master.url: "zk://127.0.0.1:2181/mesos"
 mesos.framework.role: "*"
 mesos.framework.checkpoint: false
 
+
+# Use Netty to avoid ZMQ dependencies
+storm.messaging.transport: "backtype.storm.messaging.netty.Context"

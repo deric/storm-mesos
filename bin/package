@@ -94,6 +94,10 @@ function installation {(
   cp "../${package}/bin/storm.cmd" "$stormhome/bin/"
   cp "../${package}/bin/storm-config.cmd" "$stormhome/bin/"
 
+  mkdir -p "$stormhome/logback"
+  cp "../config/logback.xml" "$stormhome/logback/cluster.xml"
+  mkdir -p "$stormhome/logs"
+
   # confiuration
   mkdir -p "$stormhome/conf"
   cp "../config/storm-mesos" etc/default/
