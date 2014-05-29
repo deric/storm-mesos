@@ -27,7 +27,6 @@ add_users()
           $USER  >/dev/null
   fi
 
-  chown -R $USER:$GROUP /var/log/$NAME
   chown -R $USER:$GROUP $HOMEDIR
 }
 

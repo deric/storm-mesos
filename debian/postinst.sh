@@ -4,6 +4,7 @@ set -e
 case "$1" in
   configure)
     chown -R storm:storm /usr/lib/storm
+    chown -R storm:storm /var/log/storm
     ldconfig
 
     if [ -f /usr/local/bin/storm ]; then
