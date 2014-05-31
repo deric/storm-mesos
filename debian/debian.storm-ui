@@ -60,8 +60,9 @@ case "$1" in
     fi
 
     echo -n "Starting $DESC: "
+    echo "$JAVA -- ${STORM_CMD}" >> /var/log/storm/storm-ui.log
     start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
-        --startas $JAVA -- ${STORM_CMD} || true
+        --startas $JAVA -- ${STORM_CMD} >> /var/log/storm/storm-ui.log 2>&1|| true
     echo "$NAME."
     ;;
   stop)
