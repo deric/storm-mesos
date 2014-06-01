@@ -7,6 +7,9 @@
     <version>cvut</version>
     <name>storm-mesos</name>
     <description>Storm integration with the Mesos cluster manager</description>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <build>
         <sourceDirectory>src</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
@@ -30,7 +33,6 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
