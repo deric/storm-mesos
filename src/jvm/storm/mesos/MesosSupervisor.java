@@ -24,6 +24,7 @@ import org.apache.mesos.Protos.TaskStatus;
 import org.json.simple.JSONValue;
 
 public class MesosSupervisor implements ISupervisor {
+
     public static final Logger LOG = Logger.getLogger(MesosSupervisor.class);
 
     volatile String _id = null;
@@ -36,7 +37,9 @@ public class MesosSupervisor implements ISupervisor {
 
     @Override
     public void assigned(Collection<Integer> ports) {
-        if(ports==null) ports = new HashSet<Integer>();
+        if (ports == null) {
+            ports = new HashSet<Integer>();
+        }
         _myassigned.set(new HashSet<Integer>(ports));
     }
 
@@ -58,7 +61,6 @@ public class MesosSupervisor implements ISupervisor {
             initter.release();
         }
 
-
         @Override
         public void launchTask(ExecutorDriver driver, TaskInfo task) {
             int port = MesosCommon.portFromTaskId(task.getTaskId().getValue());
@@ -70,22 +72,25 @@ public class MesosSupervisor implements ISupervisor {
                 Runtime.getRuntime().halt(1);
             }
             TaskStatus status = TaskStatus.newBuilder()
-                .setState(TaskState.TASK_RUNNING)
-                .setTaskId(task.getTaskId())
-                .build();
+                    .setState(TaskState.TASK_RUNNING)
+                    .setTaskId(task.getTaskId())
+                    .build();
             driver.sendStatusUpdate(status);
         }
 
         @Override
         public void killTask(ExecutorDriver driver, TaskID id) {
+            LOG.info("task killed " + id);
         }
 
         @Override
         public void frameworkMessage(ExecutorDriver driver, byte[] data) {
+            LOG.info("message " + data.toString());
         }
 
         @Override
         public void shutdown(ExecutorDriver driver) {
+            LOG.info("shutdown");
         }
 
         @Override
@@ -100,11 +105,13 @@ public class MesosSupervisor implements ISupervisor {
 
         @Override
         public void disconnected(ExecutorDriver driver) {
+            LOG.info("disconnected");
         }
 
     }
 
     public class SuicideDetector extends Thread {
+
         long _lastTime = System.currentTimeMillis();
         int _timeoutSecs;
 
@@ -115,18 +122,18 @@ public class MesosSupervisor implements ISupervisor {
         @Override
         public void run() {
             try {
-                while(true) {
+                while (true) {
                     long now = System.currentTimeMillis();
-                    if(!_myassigned.get().isEmpty()) {
+                    if (!_myassigned.get().isEmpty()) {
                         _lastTime = now;
                     }
-                    if((now - _lastTime) > 1000L * _timeoutSecs) {
+                    if ((now - _lastTime) > 1000L * _timeoutSecs) {
                         LOG.info("Supervisor has not had anything assigned for " + _timeoutSecs + " secs. Committing suicide...");
                         Runtime.getRuntime().halt(0);
                     }
                     Utils.sleep(5000);
                 }
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 LOG.error(t);
                 Runtime.getRuntime().halt(2);
             }
@@ -183,6 +190,7 @@ public class MesosSupervisor implements ISupervisor {
 
     @Override
     public void killedWorker(int port) {
+        LOG.info("killing worker on port " + port + " with assignment " + getAssignmentId());
         try {
             _state.remove(port);
         } catch (IOException e) {
