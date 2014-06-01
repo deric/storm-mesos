@@ -135,7 +135,7 @@ function pkg {
          --config-files "/etc/default/storm"
          --config-files "/etc/logrotate.d/storm"
          --config-files "/usr/lib/storm/conf/storm.yaml"
-         -d "default-jre | java7-runtime-headless | java6-runtime-headless"
+         -d "java7-runtime-headless | java6-runtime-headless"
          -d "mesos"
          -d "python"
          -s dir )
