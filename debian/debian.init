@@ -67,8 +67,6 @@ find_java() {
   done
 }
 
-echo $STORM_CMD
-
 find_java
 JAVA=${JAVA_HOME}/bin/java
 
