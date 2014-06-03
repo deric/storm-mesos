@@ -91,7 +91,10 @@ function installation {(
 
   # storm python script is using relative path to bin/storm location...
   mkdir -p "$stormhome/bin"
-  cp "../${package}/bin/storm" "$stormhome/bin/"
+  #cp "../${package}/bin/storm" "$stormhome/bin/"
+  # remove debugging path output each storm command
+  sed -n '/Running:/p!' "../${package}/bin/storm" > "$stormhome/bin/storm"
+  chmod +x "$stormhome/bin/storm"
   cp "../${package}/bin/storm.cmd" "$stormhome/bin/"
   cp "../${package}/bin/storm-config.cmd" "$stormhome/bin/"
 
