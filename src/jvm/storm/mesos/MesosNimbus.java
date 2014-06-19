@@ -77,6 +77,7 @@ public class MesosNimbus implements INimbus {
 
         @Override
         public void registered(final SchedulerDriver driver, FrameworkID id, MasterInfo masterInfo) {
+            LOG.info("registered framework with ID = " + id.getValue());
             _driver = driver;
             try {
                 _state.put(FRAMEWORK_ID, id.getValue());
@@ -112,6 +113,7 @@ public class MesosNimbus implements INimbus {
 
         @Override
         public void disconnected(SchedulerDriver driver) {
+            LOG.warn("Scheduler disconnected");
         }
 
         @Override
@@ -142,6 +144,8 @@ public class MesosNimbus implements INimbus {
 
         @Override
         public void frameworkMessage(SchedulerDriver driver, ExecutorID executorId, SlaveID slaveId, byte[] data) {
+            String msg = new String(data);
+            LOG.info("framework message " + executorId.getValue() + " data: " + msg);
         }
 
         @Override
@@ -157,6 +161,7 @@ public class MesosNimbus implements INimbus {
 
         @Override
         public void executorLost(SchedulerDriver driver, ExecutorID executor, SlaveID slave, int status) {
+            LOG.info("Executor lost: " + executor.getValue() + " status " + status);
         }
     }
 
