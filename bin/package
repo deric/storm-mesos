@@ -109,6 +109,7 @@ function installation {(
   cp "../config/storm.log.properties" $confdir
   cp "../config/storm" etc/default/
   cp "../config/storm-ui" etc/default/
+  cp "../config/storm-drpc" etc/default/
 
   # other configs
   init_scripts "$linux"
@@ -150,10 +151,12 @@ function init_scripts {
     debian/*) mkdir -p ${DEBDIR}/etc/init.d
               cp -p "$pwd"/debian/debian.init "${DEBDIR}/etc/init.d/${name}"
               cp -p "$pwd"/debian/debian.storm-ui "${DEBDIR}/etc/init.d/storm-ui"
+              cp -p "$pwd"/debian/debian.storm-drpc "${DEBDIR}/etc/init.d/storm-drpc"
        ;;
     ubuntu/*) mkdir -p ${DEBDIR}/etc/init
               cp "$pwd"/debian/ubuntu.upstart "${DEBDIR}/etc/init/${name}.conf"
               cp "$pwd"/debian/ubuntu.storm-ui "${DEBDIR}/etc/init/storm-ui.conf"
+              cp "$pwd"/debian/ubuntu.storm-drpc "${DEBDIR}/etc/init/storm-drpc.conf"
        ;;
     *) err "Not sure how to make init scripts for: $1" ;;
   esac
