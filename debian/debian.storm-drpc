@@ -18,7 +18,7 @@ if [ -f /etc/default/storm ] ; then
     . /etc/default/storm
 fi
 
-if [ -f /etc/default/storm-nimbus ] ; then
+if [ -f /etc/default/storm-drpc ] ; then
     . /etc/default/storm-drpc
 fi
 
