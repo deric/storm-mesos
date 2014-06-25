@@ -1,9 +1,6 @@
 #!/bin/bash
 
-USER="storm"
 MESOS_NATIVE_LIBRARY="/usr/local/lib/libmesos.so"
 MESOS_VERSION="0.18.2"
-#STORM_JAVA_OPTS=""
 STORM_MEM="512m"
-STORM_CORE_DIR="/usr/lib/storm"
 STORM_CONF_FILE="/etc/storm/storm.yaml"

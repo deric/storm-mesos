@@ -44,7 +44,7 @@ fi
 STORM_CLASSPATH="${STORM_MESOS_JAR}:$STORM_CLASSPATH"
 
 # Set JAVA_OPTS to be able to load native libraries and to set heap size
-JAVA_OPTS="$STORM_JAVA_OPTS"
+JAVA_OPTS="$STORM_JVM_OPTS"
 JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$STORM_LIB"
 JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_HOME"
 # Load extra JAVA_OPTS from conf/java-opts, if it exists

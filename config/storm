@@ -11,4 +11,5 @@ STORM_LOG="/var/log/storm"
 STORM_CLASSPATH="$(echo $STORM_LIB/*.jar | tr ' ' ':'):$(echo $STORM_JAR | tr ' ' ':'):$(echo $STORM_CONF | tr ' ' ':'):"
 STORM_LOG_PID="/var/run/storm-log.pid"
 STORM_OPTIONS=""
+STORM_JVM_OPTS="-Dlogback.configurationFile=${STORM_HOME}/logback/cluster.xml"
 

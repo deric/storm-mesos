@@ -106,7 +106,6 @@ function installation {(
   mkdir -p "$stormhome/conf"
   cp "../config/storm-mesos" etc/default/
   cp "../config/storm.yaml" "$stormhome/conf/"
-  cp "../config/storm.log.properties" $confdir
   cp "../config/storm" etc/default/
   cp "../config/storm-ui" etc/default/
   cp "../config/storm-drpc" etc/default/
