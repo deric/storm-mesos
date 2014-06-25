@@ -46,6 +46,16 @@ find_java() {
   done
 }
 
+storm_ui_start() {
+  start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
+        --startas $JAVA -- ${STORM_CMD} >> "${STORM_LOG}/storm-ui.log" 2>&1|| true
+}
+
+storm_ui_stop() {
+  start-stop-daemon --stop --quiet --pidfile ${PID} \
+        --exec $JAVA -- ${STORM_CMD} || true
+}
+
 find_java
 JAVA=${JAVA_HOME}/bin/java
 PID=${STORM_UI_PID}
@@ -60,24 +70,19 @@ case "$1" in
     fi
 
     echo -n "Starting $DESC: "
-    echo "$JAVA -- ${STORM_CMD}" >> /var/log/storm/storm-ui.log
-    start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
-        --startas $JAVA -- ${STORM_CMD} >> "${STORM_LOG}/storm-ui.log" 2>&1|| true
+    storm_ui_start
     echo "$NAME."
     ;;
   stop)
     echo -n "Stopping $DESC: "
-    start-stop-daemon --stop --quiet --pidfile ${PID} \
-        --exec $JAVA -- ${STORM_CMD} || true
+    storm_ui_stop
     echo "$NAME."
     ;;
   restart)
     echo -n "Restarting $DESC: "
-    start-stop-daemon --stop --quiet --pidfile ${PID} \
-        --exec $JAVA -- ${STORM_CMD} || true
+    storm_ui_stop
     sleep 1
-    start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
-        --startas $JAVA -- ${STORM_CMD} || true
+    storm_ui_start
     echo "$NAME."
     ;;
   status)
