@@ -33,7 +33,7 @@ if [ -z "$STORM_MEM" ] ; then
 fi
 export STORM_MEM
 
-STORM_MESOS_JAR="${STORM_HOME}/storm-mesos-cvut.jar"
+STORM_MESOS_JAR=$(ls ${STORM_HOME}/storm-mesos-*.jar)
 
 if [ -z "$STORM_CONF" ]; then
   STORM_CONF="/etc/storm"
