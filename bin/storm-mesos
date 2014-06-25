@@ -18,14 +18,12 @@ FWDIR="/etc/storm"
 #RUNNER="${JAVA_HOME}/bin/java"
 RUNNER="java"
 
-if [ -z "$STORM_HOME" ] ; then
-  if [ -f /etc/default/storm ] ; then
-    . /etc/default/storm
-  fi
+if [ -f /etc/default/storm ] ; then
+  . /etc/default/storm
+fi
 
-  if [ -f /etc/default/storm-mesos ] ; then
-    . /etc/default/storm-mesos
-  fi
+if [ -f /etc/default/storm-mesos ] ; then
+  . /etc/default/storm-mesos
 fi
 
 # Figure out how much memory to use per executor and set it as an environment
@@ -47,11 +45,7 @@ STORM_CLASSPATH="${STORM_MESOS_JAR}:$STORM_CLASSPATH"
 JAVA_OPTS="$STORM_JVM_OPTS"
 JAVA_OPTS="$JAVA_OPTS -Djava.library.path=$STORM_LIB"
 JAVA_OPTS="$JAVA_OPTS -Xms$STORM_MEM -Xmx$STORM_MEM -Dstorm.home=$STORM_HOME"
-# Load extra JAVA_OPTS from conf/java-opts, if it exists
-if [ -e $FWDIR/java-opts ] ; then
-  JAVA_OPTS="$JAVA_OPTS `cat $FWDIR/java-opts`"
-fi
-export JAVA_OPTS
+
 
 if [ $1 = "supervisor" ]; then
   CMD="storm.mesos.MesosSupervisor"
