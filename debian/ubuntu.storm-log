@@ -1,0 +1,15 @@
+# Ubuntu upstart file at /etc/init/storm-log.conf
+
+limit nofile 32768 32768
+
+start on (local-filesystems and net-device-up IFACE=eth0)
+stop on [!12345]
+respawn
+respawn limit 10 5
+
+script
+  # Source /etc/default
+  . /etc/default/storm
+
+    exec start-stop-daemon -N "${NICE_NUMBER}" --start --pidfile ${STORM_DRPC_PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} --name storm-log --exec storm logviewer
+end script
