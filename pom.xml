@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>storm</groupId>
     <artifactId>storm-mesos</artifactId>
-    <version>cvut</version>
+    <version>0.1</version>
     <name>storm-mesos</name>
     <description>Storm integration with the Mesos cluster manager</description>
     <properties>

@@ -27,7 +27,7 @@ set -e
 . /lib/lsb/init-functions
 
 # Set STORM Options
-STORM_CMD="-classpath $STORM_CLASSPATH -Xms$STORM_UI_JVM_MEMORY -Xmx$STORM_UI_JVM_MEMORY -Djava.library.path=\"$JAVA_LIBRARY_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_JVM_OPTS backtype.storm.ui.core"
+STORM_CMD="-classpath $STORM_CLASSPATH -Xms$STORM_UI_JVM_MEMORY -Xmx$STORM_UI_JVM_MEMORY -Djava.library.path=\"$JAVA_LIBRARY_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_JVM_OPTS $STORM_UI_JVM_OPTS backtype.storm.ui.core"
 
 find_java() {
   if [ ! -z "$JAVA_HOME" ]; then

@@ -6,4 +6,5 @@ ENABLE="no"
 STORM_UI_PID="/var/run/storm-ui.pid"
 #_ UI _#
 STORM_UI_JVM_MEMORY="768m"
+STORM_UI_JVM_OPTS="-Dlogfile.name=ui.log"
 NICE_NUMBER=0
