@@ -152,11 +152,13 @@ function init_scripts {
               cp -p "$pwd"/debian/debian.init "${DEBDIR}/etc/init.d/${name}"
               cp -p "$pwd"/debian/debian.storm-ui "${DEBDIR}/etc/init.d/storm-ui"
               cp -p "$pwd"/debian/debian.storm-drpc "${DEBDIR}/etc/init.d/storm-drpc"
+              cp -p "$pwd"/debian/debian.storm-log "${DEBDIR}/etc/init.d/storm-log"
        ;;
     ubuntu/*) mkdir -p ${DEBDIR}/etc/init
               cp "$pwd"/debian/ubuntu.upstart "${DEBDIR}/etc/init/${name}.conf"
               cp "$pwd"/debian/ubuntu.storm-ui "${DEBDIR}/etc/init/storm-ui.conf"
               cp "$pwd"/debian/ubuntu.storm-drpc "${DEBDIR}/etc/init/storm-drpc.conf"
+              cp "$pwd"/debian/ubuntu.storm-log "${DEBDIR}/etc/init/storm-log.conf"
        ;;
     *) err "Not sure how to make init scripts for: $1" ;;
   esac

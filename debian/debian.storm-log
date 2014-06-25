@@ -1,0 +1,66 @@
+#! /bin/bash
+
+### BEGIN INIT INFO
+# Provides:          storm-log
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the storm logviewer
+# Description:       starts storm logviewer using start-stop-daemon
+### END INIT INFO
+
+NAME="storm-log"
+DESC="storm-log"
+
+# Include storm defaults if available
+if [ -f /etc/default/storm ] ; then
+    . /etc/default/storm
+fi
+
+
+set -e
+
+. /lib/lsb/init-functions
+
+storm_log_start() {
+    start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
+         --startas /bin/bash -- -c "exec storm logviewer >> ${STORM_LOG}/storm-logviewer.log" || true
+}
+
+storm_log_stop() {
+    start-stop-daemon --stop --quiet --pidfile ${PID} \
+        --exec storm logviewer || true
+}
+
+PID=${STORM_LOG_PID}
+ 
+case "$1" in
+  start)
+    echo -n "Starting $DESC: "
+    storm_log_start
+    echo "$NAME."
+    ;;
+  stop)
+    echo -n "Stopping $DESC: "
+    storm_log_stop
+    echo "$NAME."
+    ;;
+  restart)
+    echo -n "Restarting $DESC: "
+    storm_log_stop
+    sleep 1
+    storm_log_start
+    echo "$NAME."
+    ;;
+  status)
+      status_of_proc -p ${PID} $NAME $NAME && exit 0 || exit $?
+      ;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart|status}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

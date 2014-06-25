@@ -30,10 +30,6 @@ set -e
 STORM_CMD="-classpath $STORM_CLASSPATH -Xms$STORM_DRPC_JVM_MEMORY -Xmx$STORM_DRPC_JVM_MEMORY -Djava.library.path=\"$JAVA_LIBRARY_PATH\" -Dstorm.options=\"$STORM_OPTIONS\" -Dstorm.home=$STORM_HOME $STORM_DRPC_JVM_OPTS backtype.storm.daemon.drpc"
 
 
-running() {
-  kill -0 `cat ${STORM_DRPC_PID}` > /dev/null 2>&1
-}
-
 find_java() {
   if [ ! -z "$JAVA_HOME" ]; then
     return
