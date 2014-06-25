@@ -50,7 +50,11 @@ find_java() {
 storm_drpc_start() {
     start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
         --startas $JAVA -- ${STORM_CMD} >> "${STORM_LOG}/storm-drpc.log" 2>&1 || true
-    echo "$NAME."
+}
+
+storm_drpc_stop() {
+    start-stop-daemon --stop --quiet --pidfile ${PID} \
+        --exec $JAVA -- ${STORM_CMD} || true
 }
 
 find_java
@@ -68,19 +72,19 @@ case "$1" in
 
     echo -n "Starting $DESC: "
     storm_drpc_start
+    echo "$NAME."
     ;;
   stop)
     echo -n "Stopping $DESC: "
-    start-stop-daemon --stop --quiet --pidfile ${PID} \
-        --exec $JAVA -- ${STORM_CMD} || true
+    storm_drpc_stop
     echo "$NAME."
     ;;
   restart)
     echo -n "Restarting $DESC: "
-    start-stop-daemon --stop --quiet --pidfile ${PID} \
-        --exec $JAVA -- ${STORM_CMD} || true
+    storm_drpc_stop
     sleep 1
     storm_drpc_start
+    echo "$NAME."
     ;;
   status)
       status_of_proc -p ${PID} $NAME $NAME && exit 0 || exit $?
