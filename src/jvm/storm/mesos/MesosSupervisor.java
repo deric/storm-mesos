@@ -36,6 +36,13 @@ public class MesosSupervisor implements ISupervisor {
 
     AtomicReference<Set<Integer>> _myassigned = new AtomicReference<Set<Integer>>(new HashSet<Integer>());
 
+    public MesosSupervisor() {
+        String home = System.getProperty("storm.home");
+        if (home == null || home.isEmpty()) {
+            System.setProperty("storm.home", "/usr/lib/storm");
+        }
+    }
+
     @Override
     public void assigned(Collection<Integer> ports) {
         if (ports == null) {
