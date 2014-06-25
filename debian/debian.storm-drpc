@@ -49,7 +49,7 @@ find_java() {
 
 storm_drpc_start() {
     start-stop-daemon --start --background --quiet --pidfile ${PID} --make-pidfile --chuid ${STORM_USER} --chdir ${STORM_HOME} \
-        --startas $JAVA -- ${STORM_CMD} >> "${STORM_LOG}/storm-drpc.log" 2>&1 || true
+         --startas /bin/bash -- -c "exec $JAVA ${STORM_CMD} >> ${STORM_LOG}/storm-drpc.log" || true
 }
 
 storm_drpc_stop() {
