@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
-import org.apache.log4j.Logger;
 import org.apache.mesos.Executor;
 import org.apache.mesos.ExecutorDriver;
 import org.apache.mesos.MesosExecutorDriver;
@@ -22,10 +21,12 @@ import org.apache.mesos.Protos.TaskID;
 import org.apache.mesos.Protos.TaskState;
 import org.apache.mesos.Protos.TaskStatus;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MesosSupervisor implements ISupervisor {
 
-    public static final Logger LOG = Logger.getLogger(MesosSupervisor.class);
+    public static final Logger LOG = LoggerFactory.getLogger(MesosSupervisor.class);
 
     volatile String _id = null;
     volatile String _assignmentId = null;
@@ -134,7 +135,7 @@ public class MesosSupervisor implements ISupervisor {
                     Utils.sleep(5000);
                 }
             } catch (Throwable t) {
-                LOG.error(t);
+                LOG.error("suicide error", t);
                 Runtime.getRuntime().halt(2);
             }
         }

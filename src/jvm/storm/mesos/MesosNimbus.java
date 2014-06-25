@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.log4j.Logger;
 import org.apache.mesos.MesosSchedulerDriver;
 import org.apache.mesos.Protos.CommandInfo;
 import org.apache.mesos.Protos.ExecutorID;
@@ -35,6 +34,8 @@ import org.apache.mesos.Protos.Value.Type;
 import org.apache.mesos.Scheduler;
 import org.apache.mesos.SchedulerDriver;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MesosNimbus implements INimbus {
 
@@ -46,7 +47,7 @@ public class MesosNimbus implements INimbus {
     public static final String CONF_MESOS_ROLE = "mesos.framework.role";
     public static final String CONF_MESOS_CHECKPOINT = "mesos.framework.checkpoint";
 
-    public static final Logger LOG = Logger.getLogger(MesosNimbus.class);
+    public static final Logger LOG = LoggerFactory.getLogger(MesosNimbus.class);
 
     private static final String FRAMEWORK_ID = "FRAMEWORK_ID";
     private final Object OFFERS_LOCK = new Object();
