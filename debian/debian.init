@@ -74,7 +74,7 @@ PIDFILE=/var/run/storm-mesos.pid
 
 go_daemon() {
   [ -z "${ULIMIT:-}" ] || ulimit $ULIMIT
-  exec /usr/local/bin/storm-mesos nimbus >> /var/log/storm/storm-mesos.log 2>&1
+  exec /usr/local/bin/storm-mesos nimbus >> "${STORM_LOG}/storm-mesos.log" 2>&1
 }
 
 start_storm_mesos() {

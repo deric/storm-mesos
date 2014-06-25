@@ -7,6 +7,7 @@ STORM_VERSION="0.9.1-incubating"
 STORM_LIB="${STORM_HOME}/lib"
 STORM_JAR="${STORM_LIB}/storm-core-${STORM_VERSION}.jar"
 STORM_CONF="/etc/storm"
+STORM_LOG="/var/log/storm"
 STORM_CLASSPATH="$(echo $STORM_LIB/*.jar | tr ' ' ':'):$(echo $STORM_JAR | tr ' ' ':'):$(echo $STORM_CONF | tr ' ' ':'):"
 
 STORM_OPTIONS=""
