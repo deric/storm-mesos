@@ -46,7 +46,7 @@ function cleanup {
 function checkout {
   package="apache-storm-${version}"
   if [ ! -d "${package}" ]; then
-      local mirror="http://www.us.apache.org/dist/incubator/storm"
+      local mirror="http://www.us.apache.org/dist/storm"
       local file=${package}.tar.gz
       local url="${mirror}/${package}/${file}"
       msg "fetching ${url}"
